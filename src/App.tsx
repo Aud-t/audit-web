@@ -5,12 +5,12 @@ import EventDetailPage from '@/pages/EventDetailPage';
 import { Route, Routes } from 'react-router-dom';
 import TimelinePage from '@/pages/TimelinePage';
 import AbusingPage from '@/pages/Abusing';
-import Header from '@/layout/Header';
+import Layout from '@/layout/Layout';
 
 function App() {
   return (
     <Routes>
-      <Route element={<Header />}>
+      <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignInPage />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
