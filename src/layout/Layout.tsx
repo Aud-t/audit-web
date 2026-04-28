@@ -1,23 +1,19 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
-
 import Header from '../components/Header';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-
 const Layout = () => {
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex justify-center w-full overflow-x-auto">
-      <div className="bg-[#f8f9fa] w-[1440px] relative shadow-xl shrink-0 flex flex-col">
+    <div className="relative min-h-screen bg-[#f8f9fa] w-full overflow-auto">
+      <div className="bg-[#f8f9fa] h-auto w-full pb-[267px] relative flex flex-col items-center">
         <Header />
         <Category />
-        <main className="flex-1 min-h-[1500px] pt-[300px]">
+        <main className="min-h-[1300px] w-[1200px] flex-1 mt-80 mx-auto">
           <Outlet />
         </main>
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };
-
 export default Layout;
