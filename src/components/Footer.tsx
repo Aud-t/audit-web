@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Footer = () => {
   const links = [
     { label: 'Github', href: '#' },
@@ -7,7 +5,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative w-[1440px] h-[267px] bg-white border-t border-gray-200 mx-auto mt-20">
+    <footer className="w-full h-[267px] absolute bottom-0 bg-white border-t border-gray-200">
       <div className="flex flex-col items-center pt-[42px]">
         <div className="h-[27px] text-2xl font-bold text-[#474747] flex items-center">
           AI PROJECT
@@ -27,7 +25,7 @@ const Footer = () => {
           ))}
         </nav>
 
-        <div className="mt-[29px] h-px w-[1200px] bg-gray-200" />
+        <div className="mt-[29px] h-px w-full bg-gray-200" />
 
         <p className="mt-[30px] text-base text-[#6e6e6e]">
           © 2026 AIPROJECT Website. All rights reserved.
