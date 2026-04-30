@@ -1,34 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import NewsCard from '@/components/NewsCard';
-import Pagination from '@/components/Pagination';
 import ThemeCard from '@/components/ThemeCard';
+import Pagination from '@/components/Pagination'; // ⭐️ 컴포넌트 임포트 확인
+import { THEME_CONFIG } from '@/components/Topic';
 
-interface ThemeItem {
-  id: number;
-  category: string;
-  title: string;
-  summary: string;
-  firstReportDate: string;
-  latestReportDate: string;
-}
+const getThemeIdByNewsId = (newsId: number) => {
+  if (newsId === 100) return 1;
+  if (newsId === 101) return 2;
+  if (newsId >= 200) return ((newsId - 200) % 3) + 1;
+  return 1;
+};
 
-interface ModalProps {
+const Modal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
   message: string;
   confirmText: string;
-}
-
-const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  title,
-  message,
-  confirmText,
-}) => {
+}> = ({ isOpen, onClose, onConfirm, title, message, confirmText }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
@@ -43,14 +33,14 @@ const Modal: React.FC<ModalProps> = ({
         <div className="flex border-t border-gray-50 h-[44px]">
           <button
             onClick={onClose}
-            className="flex-1 text-[13px] text-gray-300 font-medium hover:bg-gray-50"
+            className="flex-1 text-[13px] text-gray-300 font-medium hover:bg-gray-50 transition-colors"
           >
             취소
           </button>
           <div className="w-[1px] bg-gray-50" />
           <button
             onClick={onConfirm}
-            className="flex-1 text-[13px] text-black font-bold hover:bg-gray-50"
+            className="flex-1 text-[13px] text-black font-bold hover:bg-gray-50 transition-colors"
           >
             {confirmText}
           </button>
@@ -62,7 +52,13 @@ const Modal: React.FC<ModalProps> = ({
 
 const MyPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'scrapped' | 'recent'>('scrapped');
-  const [bookmarkedThemeIds, setBookmarkedThemeIds] = useState<number[]>([1, 2, 3]);
+  const [scrappedNewsIds, setScrappedNewsIds] = useState<number[]>([]);
+  const [recentNews, setRecentNews] = useState<any[]>([]);
+
+  // ⭐️ [Restore] 페이지네이션 원본 상태 변수
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 1; // 테스트 데이터용 (실제 프로젝트에선 데이터 길이에 맞춰 자동 계산)
+
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(
@@ -70,73 +66,16 @@ const MyPage: React.FC = () => {
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 스크랩한 주제
-  const THEME_DATA: ThemeItem[] = [
-    {
-      id: 1,
-      category: '정치',
-      title: '의료개혁 로드맵',
-      summary:
-        '정부는 지역 필수의료 붕괴를 막기 위해 의과대학 정원 확대와 더불어 지역인재 전형 비율을 대폭 강화하는 세부안을 발표했습니다. 보건복지부는 이를 위해 지역 보건의료 개편안을 마련하여 추진 중이며, 거점 국립대 중심의 의료 네트워크를 구축하여 단계별 인력 확충을 가동하고 있습니다.',
-      firstReportDate: '2026.10.10',
-      latestReportDate: '2026.10.30',
-    },
-    {
-      id: 2,
-      category: '경제',
-      title: '통화 정책 방향',
-      summary:
-        '한국은행 금융통화위원회는 최근 가계부채 급증과 부동산 시장의 불확실성이 지속됨에 따라 기준금리를 현 수준에서 유지하기로 만장일치 결정했습니다. 위원회는 향후 물가 추이와 미 연준의 금리 결정을 면밀히 주시할 예정이며, 시장의 변동성에 대비하여 유동성 공급 정책을 유연하게 운영할 방침입니다.',
-      firstReportDate: '2026.09.15',
-      latestReportDate: '2026.10.28',
-    },
-    {
-      id: 3,
-      category: '사회',
-      title: '스마트 모빌리티',
-      summary:
-        '도시 교통 혼잡을 해소하기 위한 자율주행 셔틀 서비스가 시범 운영 기간을 마치고 정식 노선 도입 단계에 접어들었습니다. 지자체는 통합 교통 시스템과의 연동을 통해 시민들의 이동 편의성을 높일 계획이며, 안전 규제 샌드박스를 활용하여 차세대 퍼스널 모빌리티 보급 사업을 전국 단위로 확장할 예정입니다.',
-      firstReportDate: '2026.08.20',
-      latestReportDate: '2026.10.25',
-    },
-  ];
+  useEffect(() => {
+    const savedScraps = JSON.parse(localStorage.getItem('scrappedNewsIds') || '[]');
+    const savedHistory = JSON.parse(localStorage.getItem('recentViewedNews') || '[]');
+    const cleanHistory = savedHistory.filter((item: any) => item.themeId !== undefined);
+    setScrappedNewsIds(savedScraps);
+    setRecentNews(cleanHistory);
+    setCurrentPage(1); // 탭 전환 시 페이지 리셋
+  }, [activeTab]);
 
-  // 최근 본 사건 데이터
-  const RECENT_NEWS_DATA = [
-    {
-      id: 101,
-      themeName: '의료개혁',
-      title: '의대 정원 배정 위원회 공식 출범',
-      summary:
-        '정부와 대학 관계자가 참여하는 정원 배정 위원회가 첫 회의를 가졌습니다. 대학별 수용 역량 조사를 기반으로 공정한 배정 기준을 마련할 방침입니다.',
-      date: '2026.10.30',
-      isBookmarked: true,
-    },
-    {
-      id: 102,
-      themeName: '통화 정책',
-      title: '금통위, 긴축 기조 유지 시사',
-      summary:
-        '이창용 총재는 기자간담회에서 물가 안정 목표치 도달 전까지는 긴축적인 통화 정책 기조를 상당 기간 유지하는 것이 적절하다고 강조했습니다.',
-      date: '2026.10.29',
-      isBookmarked: false,
-    },
-    {
-      id: 103,
-      themeName: '모빌리티',
-      title: '자율주행 4단계 안전 기준 확정',
-      summary:
-        '국토교통부는 완전 자율주행에 가까운 레벨 4 단계의 안전 기준을 최종 확정하고, 사고 발생 시 책임 소재를 명확히 하는 법적 근거를 마련했습니다.',
-      date: '2026.10.27',
-      isBookmarked: true,
-    },
-  ];
-
-  const handleBookmarkToggle = (id: number) => {
-    setBookmarkedThemeIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    );
-  };
+  const scrappedThemeIds = Array.from(new Set(scrappedNewsIds.map((id) => getThemeIdByNewsId(id))));
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -151,10 +90,16 @@ const MyPage: React.FC = () => {
     }
   };
 
+  const handleDeleteImage = () => {
+    setProfileImage(null);
+    localStorage.removeItem('userProfileImage');
+    setIsDeleteModalOpen(false);
+  };
+
   return (
     <div className="w-full pb-20">
       <div className="max-w-[880px] mx-auto px-6 pt-10">
-        {/* 프로필 */}
+        {/* 프로필 섹션 (마스터 UI 보존) */}
         <section className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-10">
           <div className="flex items-center space-x-8">
             <div className="relative">
@@ -230,23 +175,23 @@ const MyPage: React.FC = () => {
           <div className="mt-6 md:mt-0">
             <div className="bg-[#F3F3F4] rounded-[12px] w-[100px] h-[85px] flex flex-col items-center justify-center">
               <p className="text-[10px] text-gray-400 font-bold mb-1 uppercase tracking-wider">
-                스크랩한 토픽
+                Themes
               </p>
               <p className="text-[34px] font-bold text-black leading-none">
-                {bookmarkedThemeIds.length}
+                {scrappedThemeIds.length}
               </p>
             </div>
           </div>
         </section>
 
-        {/* 탭/내비게이션 */}
+        {/* 탭 & 탈퇴 버튼 */}
         <div className="flex items-end justify-between mb-10 border-b border-gray-300">
           <div className="flex space-x-8">
             <button
               onClick={() => setActiveTab('scrapped')}
               className={`text-[14px] pb-1 transition-all ${activeTab === 'scrapped' ? 'font-bold text-black border-b-2 border-black' : 'text-gray-300 font-normal hover:text-gray-500'}`}
             >
-              스크랩한 사건
+              스크랩한 토픽
             </button>
             <button
               onClick={() => setActiveTab('recent')}
@@ -277,51 +222,65 @@ const MyPage: React.FC = () => {
           </button>
         </div>
 
-        {/* 그리드 영역 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 min-h-[300px] items-start">
           {activeTab === 'scrapped'
-            ? THEME_DATA.filter((t) => bookmarkedThemeIds.includes(t.id)).map((theme) => (
-                <ThemeCard
-                  key={theme.id}
-                  {...theme}
-                  isBookmarked={true}
-                  onBookmarkToggle={handleBookmarkToggle}
-                />
-              ))
-            : RECENT_NEWS_DATA.map((news) => (
+            ? scrappedThemeIds.map((id) => {
+                const theme = THEME_CONFIG[id];
+                return (
+                  <ThemeCard
+                    key={id}
+                    id={id}
+                    category={theme.topic}
+                    title={theme.topic}
+                    summary={theme.summary}
+                    firstReportDate={theme.firstDate}
+                    latestReportDate={theme.latestDate}
+                    isBookmarked={true}
+                    onBookmarkToggle={() => {}}
+                  />
+                );
+              })
+            : recentNews.map((news) => (
                 <NewsCard
                   key={news.id}
-                  id={news.id}
-                  category={news.themeName}
-                  title={news.title}
-                  summary={news.summary}
-                  date={news.date}
-                  isBookmarked={news.isBookmarked}
-                  onBookmarkToggle={() => {}}
+                  {...news}
+                  category={THEME_CONFIG[news.themeId].topic}
+                  isBookmarked={scrappedNewsIds.includes(news.id)}
+                  onBookmarkToggle={(id) => {
+                    const updated = scrappedNewsIds.includes(id)
+                      ? scrappedNewsIds.filter((i) => i !== id)
+                      : [...scrappedNewsIds, id];
+                    setScrappedNewsIds(updated);
+                    localStorage.setItem('scrappedNewsIds', JSON.stringify(updated));
+                  }}
                 />
               ))}
         </div>
-        <Pagination currentPage={1} totalPages={1} onPageChange={() => {}} />
 
-        {/* 모달 멘트 */}
+        {/* ⭐️ [Restore] 마이페이지 하단 페이지네이션 컴포넌트 원복 */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+
         <Modal
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={() => {
-            setProfileImage(null);
-            localStorage.removeItem('userProfileImage');
-            setIsDeleteModalOpen(false);
-          }}
+          onConfirm={handleDeleteImage}
           title="프로필 이미지 초기화"
-          message={`현재 설정된 이미지를 삭제하시겠습니까? 삭제 후에는 기본 프로필로 변경됩니다.`}
+          message="현재 설정된 이미지를 삭제하시겠습니까? 삭제 후에는 기본 프로필로 변경됩니다."
           confirmText="삭제하기"
         />
         <Modal
           isOpen={isWithdrawModalOpen}
           onClose={() => setIsWithdrawModalOpen(false)}
-          onConfirm={() => setIsWithdrawModalOpen(false)}
+          onConfirm={() => {
+            alert('탈퇴되었습니다.');
+            setIsWithdrawModalOpen(false);
+          }}
           title="계정 탈퇴 확인"
-          message={`정말 탈퇴하시겠습니까? 탈퇴 시 스크랩한 모든 기사와 활동 기록이 즉시 삭제되며 이는 복구가 불가능합니다.`}
+          message="정말 탈퇴하시겠습니까? 탈퇴 시 모든 활동 기록이 즉시 삭제되며 이는 복구가 불가능합니다."
           confirmText="탈퇴하기"
         />
       </div>
