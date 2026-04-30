@@ -2,17 +2,19 @@ import React from 'react';
 
 interface NewsCardProps {
   id: number;
+  themeId: number;
   category: string;
   title: string;
   summary: string;
   date: string;
   variant?: 'default' | 'long';
   isBookmarked: boolean;
-  onBookmarkToggle: (id: number) => void;
+  onBookmarkToggle: (newsId: number) => void;
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({
   id,
+  themeId,
   category,
   title,
   summary,
@@ -24,16 +26,22 @@ const NewsCard: React.FC<NewsCardProps> = ({
   const isLong = variant === 'long';
   const cleanSummary = summary.replace(/^AI 요약:\s*/, '');
 
+  const handleCardClick = () => {
+    const recent = JSON.parse(localStorage.getItem('recentViewedNews') || '[]');
+    const newItem = { id, themeId, category, title, summary, date };
+    const filtered = [newItem, ...recent.filter((item: any) => item.id !== id)].slice(0, 12);
+    localStorage.setItem('recentViewedNews', JSON.stringify(filtered));
+  };
+
   return (
     <div
+      onClick={handleCardClick}
       className={`
         ${isLong ? 'bg-[#F3F3F4]' : 'bg-white'} 
-        border border-[#D7D7D7] rounded-[8px] 
-        flex flex-col overflow-hidden h-[185px] w-full 
+        border border-[#D7D7D7] rounded-[8px] flex flex-col overflow-hidden h-[185px] w-full 
         hover:shadow-sm transition-all group cursor-pointer
       `}
     >
-      {/* 상단 헤더*/}
       <div className="px-[18px] pt-[10px] pb-[4px] flex justify-between items-center">
         <span className="text-[11px] font-medium text-gray-400">{category}</span>
         <button
@@ -57,9 +65,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
           </svg>
         </button>
       </div>
-
       <div className="mx-[18px] border-b border-[#D7D7D7]" />
-
       <div className="px-[18px] pt-[8px] pb-[2px] flex-grow overflow-hidden">
         <h3 className="text-[18px] font-bold text-black mb-1.5 leading-[1.25] break-keep line-clamp-2">
           {title}
@@ -69,7 +75,6 @@ const NewsCard: React.FC<NewsCardProps> = ({
           {cleanSummary}
         </p>
       </div>
-
       <div className="px-[18px] pb-[14px] text-[11px] text-[#474747]">
         최초 보도: <span className="font-semibold">{date}</span>
       </div>
