@@ -10,7 +10,7 @@ export default function App() {
       : mockArticles.filter((article) => article.type === activeCategory);
 
   return (
-    <div className="min-h-screen bg-[#f4f5f7] py-12 px-6 font-sans text-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-[#FBFBFB] py-12 px-6 font-sans text-gray-900 transition-colors duration-300">
       <div className="max-w-[1200px] mx-auto flex flex-col gap-8">
         <header className="flex flex-col gap-5">
           <div className="flex flex-col md:flex-row md:items-end gap-6">
