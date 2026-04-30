@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import NewsCard from '@/components/NewsCard';
 import ThemeCard from '@/components/ThemeCard';
-import Pagination from '@/components/Pagination'; // ⭐️ 컴포넌트 임포트 확인
+import Pagination from '@/components/Pagination';
 import { THEME_CONFIG } from '@/components/Topic';
 
 const getThemeIdByNewsId = (newsId: number) => {
@@ -55,9 +55,8 @@ const MyPage: React.FC = () => {
   const [scrappedNewsIds, setScrappedNewsIds] = useState<number[]>([]);
   const [recentNews, setRecentNews] = useState<any[]>([]);
 
-  // ⭐️ [Restore] 페이지네이션 원본 상태 변수
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 1; // 테스트 데이터용 (실제 프로젝트에선 데이터 길이에 맞춰 자동 계산)
+  const totalPages = 1;
 
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -99,7 +98,7 @@ const MyPage: React.FC = () => {
   return (
     <div className="w-full pb-20">
       <div className="max-w-[880px] mx-auto px-6 pt-10">
-        {/* 프로필 섹션 (마스터 UI 보존) */}
+        {/* 프로필 섹션 */}
         <section className="flex flex-col md:flex-row md:items-end justify-between pb-8 mb-10">
           <div className="flex items-center space-x-8">
             <div className="relative">
@@ -175,7 +174,7 @@ const MyPage: React.FC = () => {
           <div className="mt-6 md:mt-0">
             <div className="bg-[#F3F3F4] rounded-[12px] w-[100px] h-[85px] flex flex-col items-center justify-center">
               <p className="text-[10px] text-gray-400 font-bold mb-1 uppercase tracking-wider">
-                Themes
+                스크랩한 토픽
               </p>
               <p className="text-[34px] font-bold text-black leading-none">
                 {scrappedThemeIds.length}
@@ -257,7 +256,6 @@ const MyPage: React.FC = () => {
               ))}
         </div>
 
-        {/* ⭐️ [Restore] 마이페이지 하단 페이지네이션 컴포넌트 원복 */}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
