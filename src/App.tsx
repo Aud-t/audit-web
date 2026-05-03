@@ -1,5 +1,5 @@
 import HomePage from '@/pages/HomePage.tsx';
-import MyPage from '@/pages/MyPage';
+import MyPage from '@/pages/mypage/MyPage';
 import SignInPage from '@/pages/SignInPage';
 import EventSummaryPage from '@/pages/event-summary/EventSummaryPage';
 import { Route, Routes } from 'react-router-dom';
