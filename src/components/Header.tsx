@@ -1,11 +1,12 @@
-import React, { useId, useState } from 'react';
+import React, { use, useId, useState } from 'react';
 import headerBg from '@/assets/back1.jpg';
 
 const Header = () => {
   const [keyword, setKeyword] = useState('');
   const searchId = useId();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const menus = ['알림', '내 정보', '소개', '로그아웃'];
+  const menus = ['내 정보', '소개', '로그아웃'];
 
   const onSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -13,7 +14,7 @@ const Header = () => {
 
   return (
     <header
-      className="absolute top-0 left-0 w-full h-[230px] overflow-hidden bg-cover bg-[50%_50%]"
+      className="absolute top-0 left-0 w-full h-[230px] bg-cover bg-[50%_50%]"
       style={{ backgroundImage: `url(${headerBg})` }}
     >
       <div
@@ -24,11 +25,38 @@ const Header = () => {
         <div className="h-[64px] w-full flex justify-between items-center px-16">
           <div className="font-bold text-[#f6f6f6] text-xl">AI PROJECT</div>
           <nav aria-label="주요 메뉴" className="flex justify-between w-[230px]">
+            <div>
+              <button
+                className="text-[#f6f6f6] text-sm p-0 cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                알림
+              </button>
+              {isOpen && (
+                <ul className="w-[350px] bg-[#f6f6f6] absolute top-12 right-48 p-3 z-[1000] rounded-md shadow-[0_2px_11px_0_rgba(0,0,0,0.25)]">
+                  <p className="text-center text-lg mb-6">알림센터</p>
+                  <li className="border-[#e2e2e2] border-b-2">
+                    <div className="flex justify-between text-[11px] text-gray-400  mt-2">
+                      <p>새로운 사건</p>
+                      <p>방금 전</p>
+                    </div>
+                    <p className="py-2">‘의료 개혁’에 새로운 사건이 등록되었습니다.</p>
+                  </li>
+
+                  <button
+                    className="w-full text-center mt-3 hover:text-gray-500"
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    닫기
+                  </button>
+                </ul>
+              )}
+            </div>
             {menus.map((item) => (
               <button
                 key={item}
                 type="button"
-                className={`${item === '로그아웃' ? 'ml-7' : ''} font-normal text-[#f6f6f6] text-sm flex items-center bg-transparent border-0 p-0 cursor-pointer hover:text-white`}
+                className={`${item === '로그아웃' ? 'ml-7' : ''} text-[#f6f6f6] text-sm p-0 cursor-pointer`}
               >
                 {item}
               </button>
