@@ -229,7 +229,7 @@ const MyPage: React.FC = () => {
                   <ThemeCard
                     key={id}
                     id={id}
-                    category={theme.topic}
+                    category={theme.category}
                     title={theme.topic}
                     summary={theme.summary}
                     firstReportDate={theme.firstDate}
