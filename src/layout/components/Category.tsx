@@ -1,0 +1,71 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const Category = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const categories = ['전체', '정치', '경제', '사회'];
+  const dropMenus = [
+    { label: '사건 리스트', to: '/' },
+    { label: '사건 브리핑', to: '/event-detail' },
+    { label: '타임라인으로 보는 사건', to: '/timeline' },
+    { label: '어뷰징 리스트', to: '/abusing' },
+  ];
+
+  return (
+    <div className="w-full  h-9 md:h-11 bg-white border-b border-gray-200 flex items-center shadow-[0px_1px_2px_0px_#e0dfdf] text-xs md:text-sm">
+      <div
+        className="relative px-4 md:px-8 h-full min-w-[177px] flex items-center border-r border-gray-200 cursor-pointer hover:bg-gray-50"
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        <div className="flex items-center gap-1 md:gap-4">
+          <span className="text-[#474747] ml-1">타임라인으로 보는 사건</span>
+          <DropdownIcon isOpen={isOpen} />
+        </div>
+        {isOpen && (
+          <div className="absolute top-[45px] left-0 w-full bg-white border border-gray-200 shadow-lg flex flex-col z-40">
+            {dropMenus.map((item, idx) => (
+              <Link
+                key={idx}
+                to={item.to}
+                className="px-0 py-3 text-center font-medium text-[#474747] hover:bg-gray-100 no-underline border-b last:border-b-0 border-gray-100"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="overflow-x-auto h-full">
+        <nav className="min-w-max flex items-center gap-12 md:pl-12 h-full px-4">
+          {categories.map((c) => (
+            <button
+              key={c}
+              className="whitespace-nowrap text-[#a3a3a3] hover:text-[#474747] font-medium border-0"
+            >
+              {c}
+            </button>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+};
+
+export default Category;
+
+const DropdownIcon = ({ isOpen }: { isOpen: boolean }) => {
+  return (
+    <svg
+      className={`w-4 h-4 md:w-5 md:h-5 text-[#474747] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+};
