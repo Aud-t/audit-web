@@ -5,14 +5,16 @@ import Footer from './components/Footer';
 
 const Layout = () => {
   return (
-    <div className="relative min-h-screen bg-[#f8f9fa] w-full overflow-x-auto min-w-[1200px]">
-      <div className="bg-[#f8f9fa] h-auto min-w-[1200px] pb-[267px] flex flex-col items-center">
+    <div className="relative min-h-screen bg-[#f8f9fa] w-full overflow-x-hidden">
+      <div className="bg-[#f8f9fa] pb-[267px] flex flex-col items-center">
         <Header />
         <Category />
-        <main className="min-h-[1300px] w-full max-w-[1200px] flex-1 mt-8 mx-auto">
+
+        <main className="w-full max-w-[1200px] flex-1 mt-8 px-4 sm:px-6 lg:px-8">
           <Outlet />
         </main>
       </div>
+
       <Footer />
     </div>
   );

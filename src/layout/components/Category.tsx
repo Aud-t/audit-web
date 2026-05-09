@@ -13,13 +13,13 @@ const Category = () => {
   ];
 
   return (
-    <div className="w-full h-11 bg-white border-b border-gray-200 flex items-center shadow-[0px_1px_2px_0px_#e0dfdf]">
+    <div className="w-full  h-9 md:h-11 bg-white border-b border-gray-200 flex items-center shadow-[0px_1px_2px_0px_#e0dfdf] text-xs md:text-sm">
       <div
-        className="relative w-80 h-full flex items-center justify-center border-r border-gray-200 cursor-pointer hover:bg-gray-50"
+        className="relative px-4 md:px-8 h-full min-w-[177px] flex items-center border-r border-gray-200 cursor-pointer hover:bg-gray-50"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className="flex items-center gap-4">
-          <span className="text-[#474747] text-sm">타임라인으로 보는 사건</span>
+        <div className="flex items-center gap-1 md:gap-4">
+          <span className="text-[#474747] ml-1">타임라인으로 보는 사건</span>
           <DropdownIcon isOpen={isOpen} />
         </div>
         {isOpen && (
@@ -28,7 +28,7 @@ const Category = () => {
               <Link
                 key={idx}
                 to={item.to}
-                className="px-0 py-3 text-center text-sm font-medium text-[#474747] hover:bg-gray-100 no-underline border-b last:border-b-0 border-gray-100"
+                className="px-0 py-3 text-center font-medium text-[#474747] hover:bg-gray-100 no-underline border-b last:border-b-0 border-gray-100"
               >
                 {item.label}
               </Link>
@@ -36,16 +36,18 @@ const Category = () => {
           </div>
         )}
       </div>
-      <nav className="flex items-center gap-12 pl-12 h-full">
-        {categories.map((c) => (
-          <button
-            key={c}
-            className="text-[#a3a3a3] hover:text-[#474747] font-medium text-sm border-0"
-          >
-            {c}
-          </button>
-        ))}
-      </nav>
+      <div className="overflow-x-auto h-full">
+        <nav className="min-w-max flex items-center gap-12 md:pl-12 h-full px-4">
+          {categories.map((c) => (
+            <button
+              key={c}
+              className="whitespace-nowrap text-[#a3a3a3] hover:text-[#474747] font-medium border-0"
+            >
+              {c}
+            </button>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 };
@@ -55,10 +57,8 @@ export default Category;
 const DropdownIcon = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <svg
-      className={`w-6 h-6 text-[#474747] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+      className={`w-4 h-4 md:w-5 md:h-5 text-[#474747] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
       viewBox="0 0 24 24"
-      width="100%"
-      height="100%"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
