@@ -13,10 +13,12 @@ const TimelineSummaryInfo = ({ topic, timeline_summary }: TimelineInfo) => {
       <p className="border-y border-gray47 py-3 text-center">타임라인</p>
       <div className="my-8 text-center">
         <p className="mb-6">소속 토픽: {topic}</p>
-        <div className="flex h-36 text-sm relative px-2">
-          <p className="absolute left-[170px] top-[13px] text-xs text-gray-400">●</p>
-          <p className="absolute left-[170px] top-[63px] text-xs">●</p>
-          <p className="absolute left-[170px] bottom-[13px] text-xs text-gray-400">●</p>
+        <div className="md:min-w-[331px] flex h-36 text-sm relative px-2">
+          <p className="absolute left-1/2 -translate-x-[55%] top-[13px] text-xs text-gray-400">●</p>
+          <p className="absolute left-1/2 -translate-x-[55%] top-[63px] text-xs">●</p>
+          <p className="absolute left-1/2 -translate-x-[55%] bottom-[13px] text-xs text-gray-400">
+            ●
+          </p>
           <div className="w-1/2 h-full border-r-2 border-gray-400 flex flex-col justify-between py-3 pr-4 text-right">
             <Link to="#">
               <p className={textStyle(timeline_summary[0].title)}>{timeline_summary[0].title}</p>

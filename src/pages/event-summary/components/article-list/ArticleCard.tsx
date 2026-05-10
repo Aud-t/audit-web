@@ -1,13 +1,15 @@
 const ArticleCard = () => {
   return (
-    <div className="flex bg-white p-5 shadow-sm mb-4">
-      <div className="w-48 h-32 bg-slate-300"></div>
-      <div className="flex-1 ml-4">
-        <div className="flex justify-between items-center mb-1 text-sm">
-          <p className="text-gray-400">메디컬 데일리 리뷰 • 2시간 전</p>
-          <p className="rounded-full bg-blue-500 text-white px-4 pt-[1px]">진보</p>
+    <div className="flex flex-col md:flex-row bg-white p-5 shadow-sm mb-4">
+      <div className="hidden md:block w-48 h-32 bg-slate-300"></div>
+      <div className="flex-1 md:ml-4">
+        <div className="flex flex-col md:flex-row justify-between md:items-center mb-1 text-sm">
+          <p className="text-gray-400 order-2 md:order-1">메디컬 데일리 리뷰 • 2시간 전</p>
+          <p className="w-fit mb-2 rounded-full bg-blue-500 text-white px-4 pt-[1px] text-xs md:order-2">
+            진보
+          </p>
         </div>
-        <h3 className="text-lg font-bold line-clamp-1">
+        <h3 className="text-base md:text-lg font-bold line-clamp-1">
           정부, '2,000명 증원' 정책 타협 불가 입장 고수
         </h3>
         <p className="line-clamp-3 text-gray-600 text-sm leading-relaxed">

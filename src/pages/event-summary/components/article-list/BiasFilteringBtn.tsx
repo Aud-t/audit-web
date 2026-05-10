@@ -10,7 +10,7 @@ const BiasFilteringBtn = () => {
   return (
     <div className="relative">
       <button
-        className="w-24 h-8 flex items-center justify-around  bg-gray-300 text-sm hover:bg-gray-400"
+        className="w-20 md:w-24 h-8 flex items-center justify-around  bg-gray-300 text-xs md:text-sm hover:bg-gray-400"
         onClick={() => setIsOpen(!isOpen)}
       >
         {bias}
@@ -25,11 +25,12 @@ const BiasFilteringBtn = () => {
           <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
-      <ul className="bg-gray-300 text-center absolute w-full">
+      <ul className="bg-gray-300 text-center absolute w-full text-xs">
         {isOpen &&
           biasList.map((data) => (
             <li
-              className="p-2 hover:bg-gray-400 cursor-pointer"
+              key={data}
+              className="p-2 hover:bg-gray-400 cursor-pointer text-xs"
               onClick={() => {
                 setBias(data);
                 setIsOpen(!isOpen);

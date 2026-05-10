@@ -21,12 +21,12 @@ const EventSummaryPage = () => {
         <Meta />
 
         {/* 메인 */}
-        <div className="flex border-b-2 border-gray47 mb-2">
+        <div className="flex flex-col md:flex-row border-b-2 border-gray47 mb-2">
           {/* 왼쪽-기사 요약 */}
           <Summary />
 
           {/* 오른쪽-요약 관련 통계 */}
-          <article className="w-4/12 px-6 pt-6">
+          <article className="px-3 pt-3 lg:px-6 lg:pt-6">
             {/* 언론사 편향 지수 */}
             <BiasInfo {...dummy.bias_index} />
 
@@ -44,8 +44,8 @@ const EventSummaryPage = () => {
 
       {/* 요약에 사용된 기사 리스트 */}
       <section className="my-16">
-        <div className="flex justify-between mb-4">
-          <h1 className="text-2xl font-bold">요약에 사용된 기사 리스트</h1>
+        <div className="flex flex-col md:flex-row justify-between mb-4">
+          <h1 className="text-lg md:text-2xl font-bold mb-3 md:mb-0">요약에 사용된 기사 리스트</h1>
           <div className="text-sm flex gap-2">
             <BiasFilteringBtn />
             <TimeFilteringBtn />

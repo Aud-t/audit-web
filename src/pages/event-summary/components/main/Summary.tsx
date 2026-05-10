@@ -2,13 +2,13 @@ import img from '@/assets/back1.jpg';
 
 const Summary = () => {
   return (
-    <article className="w-8/12 border-r-2 border-gray47 flex flex-col items-center py-8">
-      <div className="w-3/5 mb-5">
+    <article className="md:w-8/12 md:border-r-2 border-gray47 flex flex-col items-center py-8">
+      <div className="w-4/5 lg:w-3/5 mb-5">
         <img src={img} alt="임시이미지" />
         <img src={img} alt="임시이미지" />
         <img src={img} alt="임시이미지" />
       </div>
-      <div className="w-full px-16">
+      <div className="w-full px-2 lg:px-16">
         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece
         of classical Latin literature from 45 BC, making it over 2000 years old. <br />
         <br />

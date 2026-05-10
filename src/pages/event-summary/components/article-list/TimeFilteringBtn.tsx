@@ -7,7 +7,7 @@ const TimeFilteringBtn = () => {
     <button
       type="button"
       onClick={() => setIsAsc(!isAsc)}
-      className="flex items-center justify-center gap-2 w-24 h-8 bg-gray-300 text-sm hover:bg-gray-400"
+      className="flex items-center justify-center gap-2  w-20 md:w-24 h-8 bg-gray-300 text-xs md:text-sm hover:bg-gray-400"
     >
       <div className="flex flex-col items-center">
         <svg
