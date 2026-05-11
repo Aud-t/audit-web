@@ -8,9 +8,9 @@ const AbusingInfo = ({ total, abusing }: AbusInfo) => {
       <p className="border-y border-gray47 py-3 text-center">어뷰징 기사</p>
       <div className="flex flex-col items-center mt-5">
         <p className="text-sm">
-          총 {total}건의 기사에서 {abusing}건의 어뷰징 기사가 탐지되었습다.
+          총 {total}건의 기사에서 {abusing}건의 어뷰징 기사를 탐지
         </p>
-        <div className="w-40 m-5 relative">
+        <div className="w-2/5 min-w-28 max-w-40 md:w-[135px] lg:w-40 m-5 relative">
           <CircularProgressChart total={total} abusing={abusing} />
           <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl">
             {abusing}개

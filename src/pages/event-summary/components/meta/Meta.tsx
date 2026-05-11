@@ -11,41 +11,51 @@ const Meta = () => {
   return (
     <>
       {showToast && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray47 text-white px-6 py-3 rounded-full shadow-lg z-50 transition-opacity duration-300">
+        <div className="text-center w-3/4 md:w-auto text-sm md:text-base px-6 py-3 fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray47 text-white rounded-full shadow-lg z-50 transition-opacity duration-300">
           실시간 알림 신청이 완료되었습니다!
         </div>
       )}
 
       {/* 상단 */}
-      <div className="flex justify-between items-center border-b-4 border-gray47 pb-1">
-        <p className="text-base w-28">사건요약</p>
-        <p className="text-xl">정치</p>
-        <button className="text-base" onClick={handleAlertClick}>
-          실시간 알림 받기
+      <div className="flex justify-between items-center border-b-4 border-gray47 pb-1 text-sm md:text-base">
+        <p className="md:w-28">사건요약</p>
+        <p className="text-base md:text-xl">정치</p>
+        <button className="" onClick={handleAlertClick}>
+          <span className="hidden md:inline">실시간 알림 받기</span>
+          <span className="md:hidden">알림받기</span>
         </button>
       </div>
 
       {/* 하단 */}
-      <div className="h-32 flex justify-between border-y-2 border-gray47 mt-2">
-        <div className="w-72 border-r-2 border-gray47 flex items-center pl-7">
-          <div className="w-11 h-11 rounded-full bg-slate-500"></div>
-          <div className="ml-4">
-            <p className="text-xs text-gray-700">최초 보도</p>
-            <p className="text-base">2024년 5월 24일</p>
+      <div className="min-h-32 md:h-48 lg:h-32 flex flex-wrap lg:flex-nowrap justify-between border-y-2 border-gray47 mt-2 text-xs">
+        <div className="w-1/2 lg:min-w-72 lg:w-72 border-b-2 lg:border-b-0 border-r-2 border-gray47 flex items-center pl-3 md:pl-7 order-1 ">
+          <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-slate-500"></div>
+          <div className="ml-2 md:ml-4">
+            <p className="text-gray-700">최초 보도</p>
+            <p className="text-sm md:text-base">2024.05.24</p>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center">
+        <div className="py-2 w-full lg:w-auto flex flex-col justify-center items-center order-3 lg:order-2">
           <p>[의료개혁]</p>
-          <h1 className="text-2xl font-bold pb-4 mt-1">정부, 의대 정원 증원 발표</h1>
+          <h1 className="text-lg md:text-2xl font-bold md:pb-4 md:mt-1 text-center">
+            정부, 의대 정원 증원 발표정부
+          </h1>
         </div>
-        <div className="w-72 border-l-2 border-gray47 flex items-center justify-end pr-7 gap-10">
+        <div
+          className="w-1/2 lg:min-w-72 lg:w-72 border-b-2 lg:border-b-0 lg:border-l-2 border-gray47 flex items-center 
+          justify-end pr-3 md:pr-7 gap-10 order-2 lg:order-3 py-1"
+        >
           <div className="text-right">
-            <p className="text-xs text-gray-700">최근 업데이트</p>
-            <p className="text-base">2024년 5월 30일</p>
+            <p className="text-gray-700">
+              최근 업데이트<span className="sm:hidden"> / 분석 기사 수</span>
+            </p>
+            <p className="text-sm ms:text-base">
+              2024.05.30<span className="sm:hidden"> / 143</span>
+            </p>
           </div>
-          <div className="text-right">
-            <p className="text-xs text-gray-700">분석 기사 수</p>
-            <p className="text-base">143개</p>
+          <div className="text-right hidden sm:block">
+            <p className="text-gray-700">분석 기사 수</p>
+            <p className="text-sm md:text-base">143개</p>
           </div>
         </div>
       </div>
