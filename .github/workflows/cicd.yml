@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22.11.0'
           cache: npm
 
       # package-lock.json 기준으로 의존성을 깨끗하게 설치합니다.
