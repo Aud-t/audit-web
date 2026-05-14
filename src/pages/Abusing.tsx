@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { categories, mockArticles, type Article } from '../data/AbusingData';
 
 export default function App() {

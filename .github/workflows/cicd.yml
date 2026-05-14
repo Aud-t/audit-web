@@ -1,0 +1,46 @@
+name: CI/CD
+
+# main 브랜치에 코드가 올라오면 자동 배포를 실행합니다.
+# workflow_dispatch는 GitHub Actions 화면에서 수동 실행할 수 있게 해줍니다.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 저장소 코드를 GitHub Actions 실행 환경으로 가져옵니다.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Vite/React 프로젝트를 빌드하기 위해 Node.js를 설정합니다.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+          cache: npm
+
+      # package-lock.json 기준으로 의존성을 깨끗하게 설치합니다.
+      - name: Install dependencies
+        run: npm ci
+
+      # TypeScript 검사와 Vite 프로덕션 빌드를 실행해 dist 폴더를 생성합니다.
+      - name: Build
+        run: npm run build
+
+      # GitHub Actions Secrets에 저장한 AWS 키와 리전으로 AWS CLI 권한을 설정합니다.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_S3_BUCKET_REGION }}
+
+      # 빌드 결과물(dist)을 S3 버킷에 업로드합니다.
+      # --delete는 dist에 없는 오래된 S3 파일을 삭제해 배포 결과를 최신 상태로 맞춥니다.
+      - name: Deploy to S3
+        run: aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
